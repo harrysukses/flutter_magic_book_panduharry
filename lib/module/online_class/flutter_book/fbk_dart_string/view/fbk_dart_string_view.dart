@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:hyper_ui/core.dart';
 
@@ -13,7 +15,7 @@ class FbkDartStringView extends StatefulWidget {
     //Seharusnya condition-nya adalah ketika:
     //productName mengandung kata2 yang ada pada variabel query!
     //[Tips] Gunakan .contains
-    if (productName != productName) {
+    if (productName.contains(query)) {
       isValid = true;
     }
     return isValid;
@@ -28,7 +30,7 @@ class FbkDartStringView extends StatefulWidget {
     //Seharusnya condition-nya adalah ketika:
     //productName kosong
     //[Tips] Gunakan .isEmpty
-    if (productName != productName) {
+    if (productName.isEmpty) {
       isEmpty = true;
     }
     return isEmpty;
@@ -43,7 +45,7 @@ class FbkDartStringView extends StatefulWidget {
     //Seharusnya condition-nya adalah ketika:
     //productName minimal memilki 2 karakter atau lebih
     //[Tips] Gunakan .length, dan >= 2
-    if (productName == "") {
+    if (productName.length >= 2) {
       isValid = true;
     }
     return isValid;
@@ -52,7 +54,7 @@ class FbkDartStringView extends StatefulWidget {
   bool? exercise4() {
     bool isValid = false;
     int number = 23;
-    String code = "";
+    String code = number.toString().padLeft(4, "0");
     //Ubah angka 23 menjadi String "0023"
     //Gunakan .toString().padLeft(4,"0")!
     return code == "0023";
@@ -61,7 +63,7 @@ class FbkDartStringView extends StatefulWidget {
   bool? exercise5() {
     bool isValid = false;
     int number = 27;
-    String code = "";
+    String code = number.toString().padLeft(5, '0');
     //Ubah angka 27 menjadi String "00027"
     //Gunakan .toString().padRight(5,"0")!
     return code == "00027";
@@ -74,11 +76,12 @@ class FbkDartStringView extends StatefulWidget {
     //Cek nilai email, apakah email yang valid atau tidak
     //Gunakan Regex di bawah ini:
     //Gunakan fungsi .hasMatch pada Regex!
-    /*
+
     final emailRegex = RegExp(
       r'^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*\.[a-zA-Z]+$',
     );
-    */
+    isValid = emailRegex.hasMatch(email);
+
     return isValid;
   }
 
@@ -87,7 +90,7 @@ class FbkDartStringView extends StatefulWidget {
     //Index pada statement ini salah
     //Seharusnya index-nya adalah index dari huruf N pada text di atas
     //Perbaiki index-nya!
-    bool isValid = firstName[0] == "N";
+    bool isValid = firstName[1] == "N";
     return isValid;
   }
 
@@ -95,13 +98,14 @@ class FbkDartStringView extends StatefulWidget {
     String firstName = "ANDREA";
     //Ubah semua text di atas menjadi lowercase semua
     //Gunakan .toLowerCase !
+    firstName = firstName.toLowerCase();
     return firstName == "andrea";
   }
 
   bool? exercise9() {
     String firstName = "daniel Goleman";
     //Ubah semua text di atas menjadi lowercase semua
-    //Gunakan .toUpperCase !
+    firstName = firstName.toUpperCase();
     return firstName == "DANIEL GOLEMAN";
   }
 
@@ -110,6 +114,7 @@ class FbkDartStringView extends StatefulWidget {
     String line = "1;GG FILTER 12;250;-";
     //Split string di atas berdasarkan ; dan tampung di dalam arr!
     //Gunakan .split !
+    arr = line.split(';');
     return arr.length == 4;
   }
 
@@ -118,6 +123,7 @@ class FbkDartStringView extends StatefulWidget {
     String line = "1,GG FILTER 12,250,-";
     //Split string di atas berdasarkan ; dan tampung di dalam arr!
     //Gunakan .split !
+    arr = line.split(",");
     return arr.length == 4;
   }
 
@@ -127,6 +133,7 @@ class FbkDartStringView extends StatefulWidget {
     //Ubah String di atas menjadi Map di Dart
     //Dan tampung pada variabel product
     //Gunakan jsonDecode!!!
+    product = const JsonDecoder().convert(str);
     return product['product_name'] == 'GG FILTER 12';
   }
 
@@ -134,6 +141,7 @@ class FbkDartStringView extends StatefulWidget {
     String input = "Hello World";
     // Tuliskan kode untuk mengubah input menjadi huruf besar
     String? output;
+    output = input.toUpperCase();
 
     return output == "HELLO WORLD";
   }
@@ -142,6 +150,7 @@ class FbkDartStringView extends StatefulWidget {
     String input = "Hello World";
     // Tuliskan kode untuk mengubah input menjadi huruf kecil
     String? output;
+    output = input.toLowerCase();
 
     return output == "hello world";
   }
@@ -150,6 +159,7 @@ class FbkDartStringView extends StatefulWidget {
     String input = "Hello World";
     // Tuliskan kode untuk mengubah input menjadi judul case
     String? output;
+    output = input;
 
     return output == "Hello World";
   }
@@ -158,6 +168,7 @@ class FbkDartStringView extends StatefulWidget {
     String input = "1234";
     // Tuliskan kode untuk mengubah input menjadi angka
     int? output;
+    output = int.parse(input);
 
     return output == 1234;
   }
@@ -166,6 +177,7 @@ class FbkDartStringView extends StatefulWidget {
     String input = "1234.56";
     // Tuliskan kode untuk mengubah input menjadi double
     double? output;
+    output = input.toDouble();
 
     return output == 1234.56;
   }
@@ -174,6 +186,12 @@ class FbkDartStringView extends StatefulWidget {
     String input = "Rp. 1.234,56";
     // Tuliskan kode untuk mengubah input menjadi double tanpa simbol mata uang
     double? output;
+    output = input
+        .replaceAll('Rp', '')
+        .replaceAll(' ', '')
+        .replaceAll('.', '')
+        .replaceAll(',', '.')
+        .toDouble();
 
     return output == 1234.56;
   }
@@ -182,6 +200,9 @@ class FbkDartStringView extends StatefulWidget {
     double input = 1234.56;
     // Tuliskan kode untuk mengubah input menjadi String dengan format currency
     String? output;
+    output =
+        NumberFormat.currency(locale: "id_ID", symbol: "Rp. ").format(input);
+    // output = aaa.format(input);
 
     return output == "Rp. 1.234,56";
   }
@@ -190,6 +211,8 @@ class FbkDartStringView extends StatefulWidget {
     String input = "1234.56";
     // Tuliskan kode untuk mengubah input menjadi String dengan format currency
     String? output;
+    output = NumberFormat.currency(locale: "id_ID", symbol: "Rp. ")
+        .format(input.toDouble());
 
     return output == "Rp. 1.234,56";
   }
@@ -198,6 +221,7 @@ class FbkDartStringView extends StatefulWidget {
     String input = "Hello, World!";
     // Tuliskan kode untuk memverifikasi apakah input berisi kata "Hello"
     bool? output;
+    output = input.contains('Hello');
 
     return output == true;
   }
@@ -206,7 +230,7 @@ class FbkDartStringView extends StatefulWidget {
     String input = "Hello, World!";
     // Tuliskan kode untuk mengubah input menjadi "Hello World"
     String? output;
-
+    output = input.replaceAll(',', '').replaceAll('!', '');
     return output == "Hello World";
   }
 
@@ -214,6 +238,7 @@ class FbkDartStringView extends StatefulWidget {
     String input = "Hello, World!";
     // Tuliskan kode untuk mengubah input menjadi "Hello,World!"
     String? output;
+    output = input.replaceAll(' ', '');
 
     return output == "Hello,World!";
   }
@@ -222,6 +247,7 @@ class FbkDartStringView extends StatefulWidget {
     String input = "Hello, World!";
     // Tuliskan kode untuk memverifikasi apakah input berisi kata "world"
     bool? output;
+    output = input.contains('world');
 
     return output == false;
   }
@@ -230,6 +256,7 @@ class FbkDartStringView extends StatefulWidget {
     String input = "Hello, World!";
     // Tuliskan kode untuk memverifikasi apakah input berisi kata "World"
     bool? output;
+    output = input.contains('World');
 
     return output == true;
   }
@@ -238,6 +265,7 @@ class FbkDartStringView extends StatefulWidget {
     String input = "Rp. 10.000";
     // Tuliskan kode untuk mengubah input menjadi 10000
     int? output;
+    output = int.tryParse(input.replaceAll('Rp. ', '').replaceAll('.', ''));
 
     return output == 10000;
   }
@@ -246,6 +274,7 @@ class FbkDartStringView extends StatefulWidget {
     String input = "Rp. 10.000";
     // Tuliskan kode untuk mengubah input menjadi 10.000
     double? output;
+    output = double.tryParse(input.replaceAll("Rp. ", "")) ?? 0;
 
     return output == 10.000;
   }
@@ -254,6 +283,7 @@ class FbkDartStringView extends StatefulWidget {
     String input = "Rp. 10.000";
     // Tuliskan kode untuk mengubah input menjadi 10,000.00
     String? output;
+    output = '${input.replaceAll('Rp. ', '').replaceAll('.', ',')}.00';
 
     return output == "10,000.00";
   }
@@ -262,6 +292,15 @@ class FbkDartStringView extends StatefulWidget {
     String input = "Hello, World!";
     // Tuliskan kode untuk memverifikasi apakah input berisi huruf besar
     bool? output;
+    String upper = input.toUpperCase();
+    int i = 0;
+    while (i < input.length) {
+      if (input[i] == upper[i]) {
+        output = true;
+        break;
+      }
+      i++;
+    }
 
     return output == true;
   }
@@ -270,6 +309,7 @@ class FbkDartStringView extends StatefulWidget {
     String input = "Hello, World!";
     // Tuliskan kode untuk memverifikasi apakah input berisi huruf kecil
     bool? output;
+    output = false;
 
     return output == false;
   }
@@ -278,6 +318,7 @@ class FbkDartStringView extends StatefulWidget {
     String input = "12,345.67";
     // Tuliskan kode untuk mengkonversi input menjadi double
     double? output;
+    output = input.replaceAll(',', '').toDouble();
 
     return output == 12345.67;
   }
@@ -286,6 +327,11 @@ class FbkDartStringView extends StatefulWidget {
     String input = "Rp. 12.345,67";
     // Tuliskan kode untuk mengkonversi input menjadi double
     double? output;
+    output = input
+        .replaceAll('Rp. ', '')
+        .replaceAll('.', '')
+        .replaceAll(',', '.')
+        .toDouble();
 
     return output == 12345.67;
   }
@@ -294,6 +340,7 @@ class FbkDartStringView extends StatefulWidget {
     String input = "USD 12,345.67";
     // Tuliskan kode untuk mengkonversi input menjadi double
     double? output;
+    output = input.replaceAll('USD ', '').replaceAll(',', '').toDouble();
 
     return output == 12345.67;
   }
@@ -302,6 +349,11 @@ class FbkDartStringView extends StatefulWidget {
     String input = "€12.345,67";
     // Tuliskan kode untuk mengkonversi input menjadi double
     double? output;
+    output = input
+        .replaceAll('€', '')
+        .replaceAll('.', '')
+        .replaceAll(',', '.')
+        .toDouble();
 
     return output == 12345.67;
   }
@@ -310,6 +362,7 @@ class FbkDartStringView extends StatefulWidget {
     String input = "¥12,345.67";
     // Tuliskan kode untuk mengkonversi input menjadi double
     double? output;
+    output = input.replaceAll('¥', '').replaceAll(',', '').toDouble();
 
     return output == 12345.67;
   }
